@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Activity, Zap, Globe, Shield, ArrowRight, Code, Cpu, BarChart3, Lock, LogIn, UserPlus, Link as LinkIcon, Check, Search } from 'lucide-react';
+import { Activity, Zap, Globe, Shield, ArrowRight, Cpu, BarChart3, Lock, Search, Check, Link as LinkIcon, Menu } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface LandingPageProps {
@@ -12,7 +13,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
   const { t, language, setLanguage } = useLanguage();
   const [demoUrl, setDemoUrl] = useState('');
   const [demoStatus, setDemoStatus] = useState<'IDLE' | 'PARSING' | 'SUCCESS'>('IDLE');
-
+  
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -29,18 +30,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans text-slate-200 selection:bg-neon-blue/30">
+    <div className="min-h-screen flex flex-col font-sans bg-[#0B0E14] text-white selection:bg-neon-blue/30">
       {/* Navbar */}
-      <nav className="fixed w-full z-50 glass-panel border-b border-white/10 backdrop-blur-md">
+      <nav className="fixed w-full z-50 bg-[#0B0E14]/80 border-b border-white/5 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             {/* Logo */}
              <div className="flex items-center space-x-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-tr from-neon-blue to-purple-600 flex items-center justify-center shadow-lg shadow-neon-blue/20">
-                  <Activity className="text-white w-6 h-6" />
+                <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                  <Activity className="text-white w-5 h-5" />
                 </div>
                 <div>
-                  <span className="font-bold text-xl tracking-wider text-white glow-text block leading-none">QUANT AI</span>
-                  <span className="text-[10px] text-slate-400 tracking-[0.2em] block leading-none mt-1">PROFESSIONAL</span>
+                  <span className="font-bold text-lg tracking-wider text-white block leading-none">QUANT AI</span>
+                  <span className="text-[10px] text-slate-500 tracking-[0.2em] block leading-none mt-1">PRO</span>
                 </div>
             </div>
             
@@ -60,8 +61,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
                 {language === 'en' ? 'CN' : 'EN'}
               </button>
               
-              <div className="h-6 w-px bg-white/10 mx-2"></div>
-
+              <div className="h-4 w-px bg-white/10 mx-1"></div>
+              
               <button 
                 onClick={onLoginClick}
                 className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
@@ -71,7 +72,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
 
               <button 
                   onClick={onRegisterClick}
-                  className="px-5 py-2 bg-white text-black hover:bg-slate-200 rounded-full text-sm font-bold transition-all flex items-center gap-2"
+                  className="px-5 py-2 bg-white text-black hover:bg-slate-200 rounded-full text-sm font-bold transition-all flex items-center gap-2 shadow-lg"
               >
                   <span>{t('landing.signup')}</span>
                   <ArrowRight size={14} />
@@ -81,20 +82,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-40 pb-32 px-6 relative overflow-hidden">
-        {/* Ambient Background Effects */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-neon-blue/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <section className="pt-48 pb-32 px-6 relative overflow-hidden">
+        {/* Subtle Grid Background */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        
+        {/* Deep Glows */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto text-center relative z-10">
-             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-neon-green mb-8 backdrop-blur-sm animate-fade-in-up">
-                <span className="w-2 h-2 rounded-full bg-neon-green animate-pulse shadow-[0_0_10px_#10B981]" />
+             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-neon-green mb-8 backdrop-blur-md">
+                <span className="w-2 h-2 rounded-full bg-neon-green shadow-[0_0_10px_#10B981]" />
                 {t('landing.status')}
              </div>
 
              <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-8 leading-[1.1]">
                 {t('landing.hero_title_1')} <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-purple-400 to-neon-red animate-gradient-x">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400">
                   {t('landing.hero_title_2')}
                 </span>
              </h1>
@@ -106,28 +110,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
              <div className="flex flex-col md:flex-row items-center justify-center gap-5">
                 <button 
                     onClick={onRegisterClick}
-                    className="px-8 py-4 bg-neon-blue hover:bg-sky-500 text-white font-bold rounded-xl shadow-[0_0_30px_rgba(14,165,233,0.3)] hover:shadow-[0_0_50px_rgba(14,165,233,0.5)] transition-all flex items-center gap-3 text-lg group"
+                    className="px-8 py-4 bg-neon-blue hover:bg-sky-500 text-white font-bold rounded-lg shadow-[0_0_30px_rgba(14,165,233,0.2)] hover:shadow-[0_0_40px_rgba(14,165,233,0.4)] transition-all flex items-center gap-3 text-lg"
                 >
-                    <Zap size={20} fill="currentColor" className="group-hover:text-yellow-300 transition-colors" />
+                    <Zap size={20} fill="currentColor" />
                     {t('landing.btn_start')}
                 </button>
                 <button 
                     onClick={() => scrollToSection('bridge-section')}
-                    className="px-8 py-4 glass-panel border border-white/10 hover:bg-white/5 hover:border-white/20 text-white font-medium rounded-xl transition-all flex items-center gap-3 text-lg backdrop-blur-md"
+                    className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-medium rounded-lg transition-all flex items-center gap-3 text-lg backdrop-blur-md"
                 >
                     <Globe size={20} className="text-slate-400" />
                     {t('landing.nav_bridge')}
                 </button>
              </div>
 
-             {/* UI Mockup / Visual Hint */}
-             <div className="mt-20 relative mx-auto max-w-5xl rounded-t-2xl border border-white/10 bg-[#020617]/80 backdrop-blur-xl shadow-2xl overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#020617]/90 z-10 pointer-events-none" />
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/5">
-                  <div className="w-3 h-3 rounded-full bg-red-500/50" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/50" />
-                  <div className="ml-4 h-4 w-64 rounded-full bg-white/10" />
+             {/* UI Mockup */}
+             <div className="mt-20 relative mx-auto max-w-5xl rounded-t-xl border border-white/10 bg-[#0F151F] shadow-2xl overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0B0E14] z-10 pointer-events-none" />
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-[#151A23]">
+                  <div className="w-3 h-3 rounded-full bg-slate-700" />
+                  <div className="w-3 h-3 rounded-full bg-slate-700" />
+                  <div className="w-3 h-3 rounded-full bg-slate-700" />
+                  <div className="ml-4 h-5 w-64 rounded bg-black/20" />
                 </div>
                 <div className="p-8 grid grid-cols-12 gap-8 font-mono text-xs text-left opacity-80 group-hover:opacity-100 transition-opacity duration-700">
                    <div className="col-span-4 space-y-2 text-slate-500">
@@ -140,7 +144,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
                    </div>
                    <div className="col-span-8 h-32 flex items-end gap-1">
                       {Array.from({length: 40}).map((_,i) => (
-                        <div key={i} className="flex-1 bg-neon-blue/20 hover:bg-neon-blue/60 transition-colors rounded-t-sm" style={{height: `${Math.random() * 100}%`}} />
+                        <div key={i} className="flex-1 bg-blue-500/20 hover:bg-blue-500/60 transition-colors rounded-t-sm" style={{height: `${Math.random() * 100}%`}} />
                       ))}
                    </div>
                 </div>
@@ -148,48 +152,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
         </div>
       </section>
 
-      {/* Core Features Grid (Info Only) */}
-      <section id="features" className="py-24 px-6 relative bg-white/[0.02]">
-        <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t('landing.core_engines')}</h2>
-              <p className="text-slate-400">{t('landing.core_desc')}</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="glass-panel p-8 rounded-2xl border border-white/10 hover:border-neon-blue/40 transition-all duration-300 group hover:-translate-y-1">
-                    <div className="w-14 h-14 rounded-2xl bg-neon-blue/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ring-1 ring-inset ring-neon-blue/20">
-                        <Cpu className="text-neon-blue" size={28} />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-neon-blue transition-colors">{t('landing.feat_gen_title')}</h3>
-                    <p className="text-slate-400 leading-relaxed">{t('landing.feat_gen_desc')}</p>
-                </div>
-
-                <div className="glass-panel p-8 rounded-2xl border border-white/10 hover:border-purple-500/40 transition-all duration-300 group hover:-translate-y-1">
-                    <div className="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ring-1 ring-inset ring-purple-500/20">
-                        <Globe className="text-purple-400" size={28} />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">{t('landing.feat_bridge_title')}</h3>
-                    <p className="text-slate-400 leading-relaxed">{t('landing.feat_bridge_desc')}</p>
-                </div>
-
-                 <div className="glass-panel p-8 rounded-2xl border border-white/10 hover:border-neon-green/40 transition-all duration-300 group hover:-translate-y-1">
-                    <div className="w-14 h-14 rounded-2xl bg-neon-green/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ring-1 ring-inset ring-neon-green/20">
-                        <Shield className="text-neon-green" size={28} />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-neon-green transition-colors">{t('landing.feat_risk_title')}</h3>
-                    <p className="text-slate-400 leading-relaxed">{t('landing.feat_risk_desc')}</p>
-                </div>
-            </div>
-        </div>
-      </section>
-
-      {/* Signal Bridge Interactive Demo Section (NEW/UPDATED) */}
-      <section id="bridge-section" className="py-24 px-6 relative overflow-hidden">
-         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[120px] pointer-events-none" />
+      {/* Signal Bridge Interactive Demo Section */}
+      <section id="bridge-section" className="py-24 px-6 relative overflow-hidden bg-[#0B0E14]">
+         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px] pointer-events-none" />
          
          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
-            <div className="flex-1 space-y-8">
+            <div className="flex-1 space-y-8 relative z-10">
                <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-purple-500/10 text-purple-400 text-xs font-mono border border-purple-500/20">
                   <Globe size={12} /> GLOBAL SIGNAL SYNC
                </div>
@@ -201,34 +169,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
                   Instantly parse position data, calculate historical ROI, and begin auto-trading in your QMT terminal.
                </p>
                
-               <div className="flex flex-col gap-4 max-w-md">
-                 <div className="flex items-center gap-4 text-sm text-slate-300">
-                    <div className="w-8 h-8 rounded bg-white/5 flex items-center justify-center border border-white/10">1</div>
-                    <span>Copy URL from Snowball/JoinQuant</span>
-                 </div>
-                 <div className="w-px h-6 bg-white/10 ml-4"></div>
-                 <div className="flex items-center gap-4 text-sm text-slate-300">
-                    <div className="w-8 h-8 rounded bg-white/5 flex items-center justify-center border border-white/10">2</div>
-                    <span>Paste into Signal Bridge</span>
-                 </div>
-                 <div className="w-px h-6 bg-white/10 ml-4"></div>
-                 <div className="flex items-center gap-4 text-sm text-slate-300">
-                    <div className="w-8 h-8 rounded bg-white/5 flex items-center justify-center border border-white/10">3</div>
-                    <span>Start Auto-Execution</span>
-                 </div>
-               </div>
-
                <button onClick={onRegisterClick} className="px-8 py-3 bg-white text-black font-bold rounded-lg hover:bg-slate-200 transition-colors inline-flex items-center gap-2">
                  {t('landing.btn_copy')} <ArrowRight size={16} />
                </button>
             </div>
 
             {/* Interactive Demo Box */}
-            <div className="flex-1 w-full max-w-lg">
-               <div className="glass-panel p-6 rounded-2xl border border-white/10 relative shadow-2xl">
-                  {/* Decorative Elements */}
-                  <div className="absolute -top-4 -right-4 w-20 h-20 bg-purple-500/20 rounded-full blur-xl animate-pulse"></div>
-                  
+            <div className="flex-1 w-full max-w-lg relative z-10">
+               <div className="bg-[#151A23] p-6 rounded-2xl border border-white/10 relative shadow-2xl">
                   <div className="space-y-4">
                      <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
                         <span>SOURCE URL</span>
@@ -239,7 +187,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
                            type="text" 
                            value={demoUrl}
                            onChange={(e) => setDemoUrl(e.target.value)}
-                           className="w-full bg-black/40 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-slate-200 text-sm focus:outline-none focus:border-purple-500/50 transition-all"
+                           className="w-full bg-[#0B0E14] border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white text-sm focus:outline-none focus:border-purple-500/50 transition-all"
                            placeholder="https://xueqiu.com/P/ZH000192"
                         />
                         <LinkIcon className="absolute left-4 top-4 text-slate-500" size={18} />
@@ -247,7 +195,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
                      
                      <button 
                         onClick={handleDemoConnect}
-                        className="w-full py-3 bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-600/30 rounded-xl font-medium transition-all flex items-center justify-center gap-2"
+                        className="w-full py-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/20 rounded-xl font-medium transition-all flex items-center justify-center gap-2"
                      >
                         {demoStatus === 'IDLE' ? (
                            <>
@@ -266,7 +214,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
 
                      {/* Mock Result */}
                      {demoStatus === 'SUCCESS' && (
-                        <div className="mt-4 p-4 bg-white/5 rounded-xl border border-white/10 animate-in fade-in slide-in-from-top-2">
+                        <div className="mt-4 p-4 bg-[#0B0E14] rounded-xl border border-white/10 animate-in fade-in slide-in-from-top-2">
                            <div className="flex justify-between items-start mb-3">
                               <div>
                                  <h4 className="text-white font-medium text-sm">Quant-Growth-V2</h4>
@@ -276,9 +224,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
                                  <div className="text-neon-green font-mono font-bold">+142.5%</div>
                                  <div className="text-[10px] text-slate-500">Total Return</div>
                               </div>
-                           </div>
-                           <div className="h-1 w-full bg-slate-700 rounded-full overflow-hidden">
-                              <div className="h-full bg-neon-green w-[75%]"></div>
                            </div>
                            <p className="text-[10px] text-slate-400 mt-2 text-center">
                               Ready to mirror. Please <span className="text-white underline cursor-pointer" onClick={onLoginClick}>Log In</span> to continue.
@@ -292,7 +237,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
       </section>
 
       {/* Data Section */}
-      <section id="data" className="py-20 px-6 border-t border-white/5">
+      <section id="data" className="py-20 px-6 border-t border-white/5 bg-[#0F151F]">
          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
             <div className="flex-1 space-y-6">
                <h2 className="text-3xl font-bold text-white">{t('landing.data_title')}</h2>
@@ -312,27 +257,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
                     </li>
                   ))}
                </ul>
-               <button onClick={onRegisterClick} className="mt-4 text-neon-blue font-medium hover:text-white transition-colors flex items-center gap-2">
-                 {t('landing.data_btn')} <ArrowRight size={16}/>
-               </button>
             </div>
             <div className="flex-1 grid grid-cols-2 gap-4">
-               <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+               <div className="p-6 rounded-2xl bg-[#151A23] border border-white/5">
                   <BarChart3 className="text-slate-500 mb-4" size={32} />
                   <div className="text-2xl font-mono font-bold text-white">42TB+</div>
                   <div className="text-xs text-slate-500">Historical Data</div>
                </div>
-               <div className="p-6 rounded-2xl bg-white/5 border border-white/10 translate-y-8">
+               <div className="p-6 rounded-2xl bg-[#151A23] border border-white/5 translate-y-8">
                   <Zap className="text-yellow-500 mb-4" size={32} />
                   <div className="text-2xl font-mono font-bold text-white">15ms</div>
                   <div className="text-xs text-slate-500">Execution Latency</div>
                </div>
-               <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+               <div className="p-6 rounded-2xl bg-[#151A23] border border-white/5">
                   <Lock className="text-neon-red mb-4" size={32} />
                   <div className="text-2xl font-mono font-bold text-white">AES-256</div>
                   <div className="text-xs text-slate-500">Strategy Encryption</div>
                </div>
-               <div className="p-6 rounded-2xl bg-white/5 border border-white/10 translate-y-8">
+               <div className="p-6 rounded-2xl bg-[#151A23] border border-white/5 translate-y-8">
                   <Globe className="text-blue-500 mb-4" size={32} />
                   <div className="text-2xl font-mono font-bold text-white">30+</div>
                   <div className="text-xs text-slate-500">Exchanges Supported</div>
@@ -342,19 +284,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onLoginCli
       </section>
 
        {/* Footer */}
-       <footer className="mt-auto py-12 px-6 border-t border-white/5 bg-[#020617]">
+       <footer className="mt-auto py-12 px-6 border-t border-white/5 bg-[#0B0E14]">
          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
-                 <div className="w-6 h-6 rounded bg-gradient-to-tr from-neon-blue to-purple-600 flex items-center justify-center">
+                 <div className="w-6 h-6 rounded bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center">
                     <Activity className="text-white w-3 h-3" />
                  </div>
                  <span className="font-semibold text-slate-300 tracking-wide">QUANT AI</span>
             </div>
             <div className="flex flex-wrap justify-center gap-8">
-                <a href="#privacy" onClick={(e) => e.preventDefault()} className="hover:text-neon-blue transition-colors">Privacy Policy</a>
-                <a href="#terms" onClick={(e) => e.preventDefault()} className="hover:text-neon-blue transition-colors">Terms of Service</a>
-                <a href="#api" onClick={(e) => e.preventDefault()} className="hover:text-neon-blue transition-colors">API Documentation</a>
-                <a href="#status" onClick={(e) => e.preventDefault()} className="hover:text-neon-blue transition-colors">Status</a>
+                <a href="#privacy" onClick={(e) => e.preventDefault()} className="hover:text-white transition-colors">Privacy</a>
+                <a href="#terms" onClick={(e) => e.preventDefault()} className="hover:text-white transition-colors">Terms</a>
+                <a href="#api" onClick={(e) => e.preventDefault()} className="hover:text-white transition-colors">API</a>
+                <a href="#status" onClick={(e) => e.preventDefault()} className="hover:text-white transition-colors">Status</a>
             </div>
             <div className="mt-4 md:mt-0 text-xs">
                 {t('landing.footer_rights')}

@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
-        darkMode: 'class',
         theme: {
           extend: {
             fontFamily: {
@@ -18,15 +18,12 @@
               mono: ['JetBrains Mono', 'monospace'],
             },
             colors: {
-              glass: {
-                100: 'rgba(255, 255, 255, 0.05)',
-                200: 'rgba(255, 255, 255, 0.1)',
-                300: 'rgba(255, 255, 255, 0.15)',
-              },
+              // Defined in CSS variables but mapped here for utility usage if needed
               neon: {
+                blue: '#0EA5E9',
                 green: '#10B981',
                 red: '#F43F5E',
-                blue: '#0EA5E9',
+                purple: '#8B5CF6',
               }
             }
           }
@@ -34,34 +31,86 @@
       }
     </script>
     <style>
+      :root {
+        /* =========================================
+           INSTITUTIONAL PRO THEME (Midnight Aurora)
+           Unified. High Contrast. Data-First.
+        ========================================= */
+        --bg-app: #0B0E14;          /* Deep Abyssal Blue/Black */
+        --bg-panel: #151A23;        /* Slightly lighter for cards */
+        --bg-panel-hover: #1C222E;  /* Hover state */
+        --border-panel: rgba(255, 255, 255, 0.06); /* Ultra subtle border */
+        
+        --text-primary: #F1F5F9;    /* Slate 100 */
+        --text-secondary: #94A3B8;  /* Slate 400 */
+        --text-muted: #64748B;      /* Slate 500 */
+        
+        --accent-blue: #0EA5E9;     /* Sky 500 */
+        --accent-green: #10B981;    /* Emerald 500 */
+        --accent-red: #F43F5E;      /* Rose 500 */
+        
+        --glass-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5); 
+        --input-bg: #0F151F;
+        --input-border: rgba(255, 255, 255, 0.08);
+      }
+
       body {
-        background: radial-gradient(circle at 50% 0%, #1e293b 0%, #020617 100%);
-        color: #e2e8f0;
-        min-height: 100vh;
+        background-color: var(--bg-app);
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
       }
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.2);
-      }
-      ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.2);
-      }
+
+      /* Unified Panel Style - High End Flat/Glass Hybrid */
       .glass-panel {
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: var(--bg-panel);
+        border: 1px solid var(--border-panel);
+        box-shadow: var(--glass-shadow);
+        /* Subtle noise texture overlay could be added here for more texture */
       }
-      .glow-text {
-        text-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
+      
+      .glass-panel:hover {
+        background: var(--bg-panel-hover);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Inputs */
+      input, select, textarea {
+        background-color: var(--input-bg) !important;
+        border: 1px solid var(--input-border) !important;
+        color: var(--text-primary) !important;
+        transition: all 0.2s ease;
+      }
+      
+      input:focus, select:focus, textarea:focus {
+        border-color: var(--accent-blue) !important;
+        box-shadow: 0 0 0 1px var(--accent-blue);
+      }
+
+      /* Utility */
+      .text-glow {
+        text-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+      }
+
+      /* Scrollbar - Minimalist */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 3px;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: #475569;
       }
     </style>
   <script type="importmap">

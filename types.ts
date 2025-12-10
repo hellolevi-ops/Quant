@@ -1,4 +1,5 @@
 
+
 export enum StrategyStatus {
   RUNNING = 'RUNNING',
   PAUSED = 'PAUSED',
@@ -54,9 +55,14 @@ export interface Post {
   codeSnippet?: string; // New: Support for code sharing
   likes: number;
   comments: number;
-  timestamp: string;
+  timestamp: string; // Display string
   tags: string[];
   isOfficial?: boolean;
+  
+  // Sorting fields
+  views: number;
+  createdAt: string; // ISO string for sorting
+  lastReplyAt: string; // ISO string for sorting
 }
 
 export interface Comment {
@@ -77,12 +83,52 @@ export interface DataSource {
   sampleData?: any[];
 }
 
-export type ModelProvider = 'GEMINI' | 'DEEPSEEK' | 'OPENAI';
+export type ModelProvider = 'GEMINI' | 'DEEPSEEK' | 'OPENAI' | 'ANTHROPIC' | 'MISTRAL';
 
 export interface ApiKeyConfig {
   provider: ModelProvider;
   key: string;
   isActive: boolean;
+}
+
+export interface ResearchReport {
+  id: string;
+  title: string;
+  analyst: string;
+  date: string;
+  sector: string;
+  summary?: string;
+  content: string; // Mock content or PDF url
+  aiAnalysis?: string;
+  tags: string[];
+  views: number;
+}
+
+export interface Factor {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  confidence: number;
+}
+
+export interface DockerConfig {
+  provider: 'ALIYUN' | 'TENCENT' | 'AWS' | 'CUSTOM';
+  host: string;
+  port: string;
+  authToken: string;
+  brokerType: 'QMT' | 'PTRADE' | 'MINI_QMT';
+  accountId: string;
+  status: 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR';
+}
+
+export interface StrategyTemplate {
+  id: string;
+  nameKey: string;
+  descKey: string;
+  prompt: string;
+  code: string;
+  tags: string[];
 }
 
 export enum Page {
@@ -92,6 +138,25 @@ export enum Page {
   MY_STRATEGIES = 'MY_STRATEGIES',
   DATA_CENTER = 'DATA_CENTER',
   COMMUNITY = 'COMMUNITY',
+  RESEARCH = 'RESEARCH',
   LIVE_SETUP = 'LIVE_SETUP',
-  PROFILE = 'PROFILE'
+  PROFILE = 'PROFILE',
+  ADMIN_DASHBOARD = 'ADMIN_DASHBOARD'
 }
+
+export enum UserTier {
+  FREE = 'FREE',
+  GOLD = 'GOLD',
+  DIAMOND = 'DIAMOND'
+}
+
+export type PaymentMethod = 'WECHAT' | 'ALIPAY';
+
+export interface PointPackage {
+  id: string;
+  points: number;
+  price: number;
+  bonus?: number;
+}
+
+export type UserRole = 'USER' | 'ADMIN';

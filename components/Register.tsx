@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Activity, Mail, Lock, User, ArrowRight, ShieldCheck, Smartphone, MessageSquare, RefreshCw, X, Check } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -15,7 +16,6 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin,
   const [captchaCode, setCaptchaCode] = useState('');
   const [smsTimer, setSmsTimer] = useState(0);
 
-  // Generate random captcha
   const refreshCaptcha = () => {
     setCaptchaCode(Math.random().toString(36).substring(2, 6).toUpperCase());
   };
@@ -37,45 +37,40 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin,
   const handleSendCode = () => {
     if (smsTimer === 0) {
       setSmsTimer(60);
-      // Mock sending SMS logic
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate network request
     setTimeout(() => {
       setIsLoading(false);
-      setShowWeChatModal(true); // Show WeChat modal instead of direct finish
+      setShowWeChatModal(true); 
     }, 1500);
   };
 
   const handleWeChatBind = () => {
-    // Simulate binding
     setTimeout(() => {
-      onRegister(); // Go to App
+      onRegister(); 
     }, 1000);
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-6 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col justify-center items-center p-6 relative overflow-hidden bg-[#0B0E14]">
       {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_0%,#1e293b_0%,#020617_100%)] -z-20"></div>
-      <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-neon-green/10 rounded-full blur-[100px] -z-10 animate-pulse"></div>
-      <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-neon-blue/10 rounded-full blur-[80px] -z-10"></div>
-
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,#1e293b_0%,#0B0E14_100%)] -z-20"></div>
+      
       {/* Logo */}
       <div className="mb-8 cursor-pointer group" onClick={onBack}>
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-tr from-neon-blue to-purple-600 flex items-center justify-center shadow-lg shadow-neon-blue/20 group-hover:scale-110 transition-transform">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">
             <Activity className="text-white w-6 h-6" />
           </div>
-          <span className="font-bold text-2xl tracking-wider text-white glow-text">QUANT AI</span>
+          <span className="font-bold text-2xl tracking-wider text-white">QUANT AI</span>
         </div>
       </div>
 
-      <div className="w-full max-w-md glass-panel p-8 rounded-2xl border border-white/10 shadow-2xl relative">
+      <div className="w-full max-w-md bg-[#151A23] p-8 rounded-2xl border border-white/10 shadow-2xl relative">
          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-50"></div>
 
          <div className="text-center mb-8">
@@ -92,7 +87,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin,
                <input 
                  type="text" 
                  required
-                 className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-slate-200 focus:outline-none focus:border-neon-blue/50 focus:ring-1 focus:ring-neon-blue/50 transition-all placeholder:text-slate-600"
+                 className="w-full bg-[#0B0E14] border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:border-neon-blue/50"
                  placeholder="Real Name"
                />
              </div>
@@ -106,7 +101,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin,
                <input 
                  type="tel" 
                  required
-                 className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-slate-200 focus:outline-none focus:border-neon-blue/50 focus:ring-1 focus:ring-neon-blue/50 transition-all placeholder:text-slate-600"
+                 className="w-full bg-[#0B0E14] border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:border-neon-blue/50"
                  placeholder="+86 1XX XXXX XXXX"
                />
              </div>
@@ -122,7 +117,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin,
                     type="text" 
                     required
                     maxLength={6}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-slate-200 focus:outline-none focus:border-neon-blue/50 focus:ring-1 focus:ring-neon-blue/50 transition-all placeholder:text-slate-600"
+                    className="w-full bg-[#0B0E14] border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:border-neon-blue/50"
                     placeholder="123456"
                   />
                 </div>
@@ -130,7 +125,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin,
                   type="button"
                   onClick={handleSendCode}
                   disabled={smsTimer > 0}
-                  className={`px-4 rounded-xl text-xs font-medium min-w-[100px] border border-white/10 ${smsTimer > 0 ? 'bg-white/5 text-slate-500 cursor-not-allowed' : 'bg-neon-blue/10 text-neon-blue hover:bg-neon-blue/20'}`}
+                  className={`px-4 rounded-lg text-xs font-medium min-w-[100px] border border-white/10 ${smsTimer > 0 ? 'bg-white/5 text-slate-500 cursor-not-allowed' : 'bg-neon-blue/10 text-neon-blue hover:bg-neon-blue/20'}`}
                 >
                     {smsTimer > 0 ? `${smsTimer}s` : t('auth.get_code')}
                 </button>
@@ -145,7 +140,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin,
                <input 
                  type="password" 
                  required
-                 className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-slate-200 focus:outline-none focus:border-neon-blue/50 focus:ring-1 focus:ring-neon-blue/50 transition-all placeholder:text-slate-600"
+                 className="w-full bg-[#0B0E14] border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:border-neon-blue/50"
                  placeholder="••••••••"
                />
              </div>
@@ -159,14 +154,13 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin,
                   type="text" 
                   required
                   maxLength={4}
-                  className="flex-1 bg-black/40 border border-white/10 rounded-xl py-3 px-4 text-slate-200 focus:outline-none focus:border-neon-blue/50 focus:ring-1 focus:ring-neon-blue/50 transition-all placeholder:text-slate-600 text-center tracking-widest uppercase font-mono"
+                  className="flex-1 bg-[#0B0E14] border border-white/10 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-neon-blue/50 text-center tracking-widest uppercase font-mono"
                   placeholder="ABCD"
                 />
                 <div 
                   onClick={refreshCaptcha}
-                  className="w-28 bg-white/10 rounded-xl border border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/20 relative overflow-hidden group select-none"
+                  className="w-28 bg-white/5 rounded-lg border border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/10 relative overflow-hidden group select-none"
                 >
-                   <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
                    <span className="font-mono text-xl font-bold text-white tracking-widest relative z-10 italic transform -rotate-2">{captchaCode}</span>
                    <RefreshCw size={12} className="absolute bottom-1 right-1 text-slate-500 opacity-50" />
                 </div>
@@ -181,7 +175,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin,
            <button 
              type="submit" 
              disabled={isLoading}
-             className="w-full bg-white text-black hover:bg-slate-200 font-bold py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] mt-4 flex items-center justify-center space-x-2"
+             className="w-full bg-white text-black hover:bg-slate-200 font-bold py-3.5 rounded-lg transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] mt-4 flex items-center justify-center space-x-2"
            >
              {isLoading ? (
                <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
@@ -204,7 +198,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin,
       {/* Bind WeChat Modal */}
       {showWeChatModal && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="w-full max-w-sm glass-panel p-8 rounded-2xl border border-white/20 text-center relative transform scale-100">
+          <div className="w-full max-w-sm bg-[#151A23] p-8 rounded-2xl border border-white/20 text-center relative shadow-2xl">
              <button onClick={onRegister} className="absolute top-4 right-4 text-slate-500 hover:text-white">
                <X size={20} />
              </button>
@@ -219,7 +213,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin,
              <div className="space-y-3">
                <button 
                   onClick={handleWeChatBind}
-                  className="w-full bg-neon-green hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                  className="w-full bg-neon-green hover:bg-emerald-500 text-white font-bold py-3 rounded-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)]"
                >
                  {t('auth.bind')}
                </button>

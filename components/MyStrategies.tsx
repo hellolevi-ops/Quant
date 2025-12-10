@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Strategy, StrategyStatus } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Play, Pause, Edit3, TrendingUp, X, Save } from 'lucide-react';
+import { Play, Pause, Edit3, TrendingUp, X, Save, BookOpen, Activity } from 'lucide-react';
 import {
   LineChart,
   Line,
@@ -13,18 +13,27 @@ const mockStrategies: Strategy[] = [
   { id: '1', name: 'Alpha-Dragon-V2', type: 'AI_GENERATED', roi: 42.5, todayPnl: 1250, status: StrategyStatus.RUNNING, description: 'RSI Mean Reversion on A-Shares', assets: 50000, maxDD: -5.2 },
   { id: '2', name: 'Crypto-Grid-Bot', type: 'AI_GENERATED', roi: 12.8, todayPnl: -45, status: StrategyStatus.PAUSED, description: 'Neutral Grid Trading BTC/USDT', assets: 12000, maxDD: -12.1 },
   { id: '3', name: 'Snowball-Copy-ZH1', type: 'FOLLOW_COPY', roi: 156.2, todayPnl: 3420, status: StrategyStatus.RUNNING, platform: 'Snowball', assets: 150000, maxDD: -15.4 },
+  { id: '4', name: 'Saved-Mean-Reversion-V1', type: 'AI_GENERATED', roi: 0, todayPnl: 0, status: StrategyStatus.STOPPED, description: 'Strategy saved from AI Workshop. Awaiting deployment.', assets: 0, maxDD: 0 },
 ];
 
 const mockSparkline = Array.from({ length: 20 }, (_, i) => ({ val: Math.random() * 100 }));
 
 export const MyStrategies: React.FC = () => {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<'SELF' | 'COPY'>('SELF');
+  const [activeTab, setActiveTab] = useState<'LIVE' | 'LIBRARY'>('LIVE');
   const [selectedStrat, setSelectedStrat] = useState<Strategy | null>(null);
 
-  const filteredStrategies = mockStrategies.filter(s => 
-    activeTab === 'SELF' ? s.type === 'AI_GENERATED' : s.type === 'FOLLOW_COPY'
-  );
+  // Logic: 
+  // LIVE: Only show strategies with status RUNNING
+  // LIBRARY: Show ALL strategies (Paused, Stopped, Running) regardless of type
+  const filteredStrategies = mockStrategies.filter(s => {
+    if (activeTab === 'LIVE') {
+      return s.status === StrategyStatus.RUNNING;
+    } else {
+      // LIBRARY shows everything
+      return true;
+    }
+  });
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
@@ -46,7 +55,10 @@ export const MyStrategies: React.FC = () => {
          <div className="glass-panel p-6 rounded-2xl border border-white/10 flex items-center justify-between">
             <div>
                <h3 className="text-slate-400 text-sm uppercase">{t('mystrat.active_count')}</h3>
-               <div className="text-3xl font-mono font-bold text-white mt-2">2 <span className="text-sm text-slate-500 font-normal">/ 5</span></div>
+               <div className="text-3xl font-mono font-bold text-white mt-2">
+                 {mockStrategies.filter(s => s.status === StrategyStatus.RUNNING).length} 
+                 <span className="text-sm text-slate-500 font-normal"> / {mockStrategies.length}</span>
+               </div>
             </div>
             <div className="w-12 h-12 rounded-full bg-neon-blue/20 flex items-center justify-center text-neon-blue animate-pulse">
                <Play fill="currentColor" size={20} />
@@ -58,69 +70,83 @@ export const MyStrategies: React.FC = () => {
       <div className="glass-panel rounded-2xl border border-white/10 overflow-hidden">
          <div className="flex border-b border-white/10">
             <button 
-              onClick={() => setActiveTab('SELF')}
-              className={`px-8 py-4 text-sm font-medium transition-colors border-b-2 ${activeTab === 'SELF' ? 'border-neon-blue text-white bg-white/5' : 'border-transparent text-slate-500 hover:text-white'}`}
+              onClick={() => setActiveTab('LIVE')}
+              className={`px-8 py-4 text-sm font-medium transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'LIVE' ? 'border-neon-blue text-white bg-white/5' : 'border-transparent text-slate-500 hover:text-white'}`}
             >
-              {t('mystrat.tab_self')}
+              <Activity size={16}/> {t('mystrat.tab_live')}
             </button>
             <button 
-              onClick={() => setActiveTab('COPY')}
-              className={`px-8 py-4 text-sm font-medium transition-colors border-b-2 ${activeTab === 'COPY' ? 'border-neon-blue text-white bg-white/5' : 'border-transparent text-slate-500 hover:text-white'}`}
+              onClick={() => setActiveTab('LIBRARY')}
+              className={`px-8 py-4 text-sm font-medium transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'LIBRARY' ? 'border-neon-blue text-white bg-white/5' : 'border-transparent text-slate-500 hover:text-white'}`}
             >
-              {t('mystrat.tab_copy')}
+              <BookOpen size={16}/> {t('mystrat.tab_lib')}
             </button>
          </div>
 
          <div className="p-6 grid grid-cols-1 gap-4">
-            {filteredStrategies.map((strat) => (
-               <div key={strat.id} onClick={() => setSelectedStrat(strat)} className="group p-5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer flex flex-col md:flex-row items-center justify-between gap-6">
-                  
-                  {/* Info */}
-                  <div className="flex items-center gap-4 min-w-[200px]">
-                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${strat.status === StrategyStatus.RUNNING ? 'bg-neon-green/10 text-neon-green' : 'bg-slate-700 text-slate-400'}`}>
-                        {strat.status === StrategyStatus.RUNNING ? <TrendingUp size={20} /> : <Pause size={20} />}
-                     </div>
-                     <div>
-                        <h4 className="text-white font-medium group-hover:text-neon-blue transition-colors">{strat.name}</h4>
-                        <p className="text-xs text-slate-500">{strat.platform || 'Custom Python'}</p>
-                     </div>
+            {filteredStrategies.length === 0 ? (
+               <div className="text-center py-12 text-slate-500">
+                  <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                     {activeTab === 'LIVE' ? <Activity size={32} className="opacity-50"/> : <BookOpen size={32} className="opacity-50"/>}
                   </div>
-
-                  {/* Stats */}
-                  <div className="flex-1 grid grid-cols-3 gap-4 text-center">
-                     <div>
-                        <div className="text-xs text-slate-500">{t('mystrat.roi')}</div>
-                        <div className={`font-mono font-bold ${strat.roi >= 0 ? 'text-neon-green' : 'text-neon-red'}`}>{strat.roi > 0 ? '+' : ''}{strat.roi}%</div>
-                     </div>
-                     <div>
-                        <div className="text-xs text-slate-500">{t('mystrat.assets')}</div>
-                        <div className="font-mono text-white">${strat.assets?.toLocaleString()}</div>
-                     </div>
-                     <div>
-                        <div className="text-xs text-slate-500">{t('mystrat.maxdd')}</div>
-                        <div className="font-mono text-neon-red">{strat.maxDD}%</div>
-                     </div>
-                  </div>
-
-                  {/* Sparkline */}
-                  <div className="w-32 h-12 hidden md:block">
-                     <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={mockSparkline}>
-                           <Line type="monotone" dataKey="val" stroke={strat.roi >= 0 ? "#10B981" : "#F43F5E"} strokeWidth={2} dot={false} />
-                        </LineChart>
-                     </ResponsiveContainer>
-                  </div>
-
-                  {/* Status Badge */}
-                  <div className={`px-3 py-1 rounded-full text-xs font-medium border ${
-                     strat.status === StrategyStatus.RUNNING 
-                        ? 'bg-neon-green/10 text-neon-green border-neon-green/20' 
-                        : 'bg-slate-700/50 text-slate-400 border-slate-600'
-                  }`}>
-                     {strat.status}
-                  </div>
+                  <p>{activeTab === 'LIVE' ? t('mystrat.empty_live') : t('mystrat.empty_lib')}</p>
                </div>
-            ))}
+            ) : (
+               filteredStrategies.map((strat) => (
+                  <div key={strat.id} onClick={() => setSelectedStrat(strat)} className="group p-5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer flex flex-col md:flex-row items-center justify-between gap-6">
+                     
+                     {/* Info */}
+                     <div className="flex items-center gap-4 min-w-[200px]">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${strat.status === StrategyStatus.RUNNING ? 'bg-neon-green/10 text-neon-green' : 'bg-slate-700 text-slate-400'}`}>
+                           {strat.status === StrategyStatus.RUNNING ? <TrendingUp size={20} /> : <Pause size={20} />}
+                        </div>
+                        <div>
+                           <h4 className="text-white font-medium group-hover:text-neon-blue transition-colors">{strat.name}</h4>
+                           <div className="flex items-center gap-2 text-xs text-slate-500">
+                              <span className={`px-1.5 rounded ${strat.type === 'FOLLOW_COPY' ? 'bg-purple-500/20 text-purple-400' : 'bg-neon-blue/20 text-neon-blue'}`}>
+                                 {strat.type === 'FOLLOW_COPY' ? 'COPY' : 'AI'}
+                              </span>
+                              <span>{strat.platform || 'Custom Python'}</span>
+                           </div>
+                        </div>
+                     </div>
+
+                     {/* Stats */}
+                     <div className="flex-1 grid grid-cols-3 gap-4 text-center">
+                        <div>
+                           <div className="text-xs text-slate-500">{t('mystrat.roi')}</div>
+                           <div className={`font-mono font-bold ${strat.roi >= 0 ? 'text-neon-green' : 'text-neon-red'}`}>{strat.roi > 0 ? '+' : ''}{strat.roi}%</div>
+                        </div>
+                        <div>
+                           <div className="text-xs text-slate-500">{t('mystrat.assets')}</div>
+                           <div className="font-mono text-white">${strat.assets?.toLocaleString()}</div>
+                        </div>
+                        <div>
+                           <div className="text-xs text-slate-500">{t('mystrat.maxdd')}</div>
+                           <div className="font-mono text-neon-red">{strat.maxDD}%</div>
+                        </div>
+                     </div>
+
+                     {/* Sparkline */}
+                     <div className="w-32 h-12 hidden md:block">
+                        <ResponsiveContainer width="100%" height="100%">
+                           <LineChart data={mockSparkline}>
+                              <Line type="monotone" dataKey="val" stroke={strat.roi >= 0 ? "#10B981" : "#F43F5E"} strokeWidth={2} dot={false} />
+                           </LineChart>
+                        </ResponsiveContainer>
+                     </div>
+
+                     {/* Status Badge */}
+                     <div className={`px-3 py-1 rounded-full text-xs font-medium border ${
+                        strat.status === StrategyStatus.RUNNING 
+                           ? 'bg-neon-green/10 text-neon-green border-neon-green/20' 
+                           : 'bg-slate-700/50 text-slate-400 border-slate-600'
+                     }`}>
+                        {strat.status}
+                     </div>
+                  </div>
+               ))
+            )}
          </div>
       </div>
 
@@ -172,8 +198,12 @@ export const MyStrategies: React.FC = () => {
 
                  <div>
                     <label className="text-xs text-slate-400 uppercase font-bold mb-2 block">{t('mystrat.code_preview')} (Read-Only)</label>
-                    <div className="bg-[#0d1117] p-4 rounded-lg border border-white/10 font-mono text-xs text-slate-400 h-48 overflow-auto">
-                       <pre>{`class ${selectedStrat.name.replace(/-/g, '')}(bt.Strategy):
+                    <div className="bg-[#1e1e1e] p-0 rounded-lg border border-white/10 font-mono text-xs overflow-hidden flex">
+                       <div className="bg-[#1e1e1e] border-r border-white/5 text-slate-600 p-4 text-right select-none">
+                          1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9
+                       </div>
+                       <div className="p-4 text-slate-400 overflow-auto">
+                           <pre>{`class ${selectedStrat.name.replace(/-/g, '')}(bt.Strategy):
     params = (('period', 14),)
 
     def __init__(self):
@@ -184,7 +214,8 @@ export const MyStrategies: React.FC = () => {
             self.buy()
         elif self.rsi > 70 and self.position:
             self.sell()`}
-                       </pre>
+                           </pre>
+                       </div>
                     </div>
                  </div>
               </div>

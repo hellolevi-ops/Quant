@@ -1,3 +1,5 @@
+
+
 import React, { useState } from 'react';
 import { Layout } from './components/Layout';
 import { Dashboard } from './components/Dashboard';
@@ -7,24 +9,32 @@ import { MyStrategies } from './components/MyStrategies';
 import { DataCenter } from './components/DataCenter';
 import { Community } from './components/Community';
 import { Profile } from './components/Profile';
+import { ResearchReports } from './components/ResearchReports';
+import { LiveTradingSetup } from './components/LiveTradingSetup';
 import { LandingPage } from './components/LandingPage';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
+import { AdminDashboard } from './components/AdminDashboard';
 import { Page } from './types';
-
-// Placeholder components for other pages to ensure compilation
-const Placeholder = ({ title }: { title: string }) => (
-  <div className="glass-panel p-12 rounded-2xl border border-white/10 text-center">
-    <h2 className="text-2xl text-white font-bold mb-4">{title}</h2>
-    <p className="text-slate-400">This module is available in the full deployment.</p>
-  </div>
-);
 
 type ViewState = 'LANDING' | 'LOGIN' | 'REGISTER' | 'APP';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('LANDING');
   const [currentPage, setCurrentPage] = useState<Page>(Page.DASHBOARD);
+  
+  // State to pass from Research to Workshop
+  const [workshopPrompt, setWorkshopPrompt] = useState<string | undefined>(undefined);
+
+  const handleGenerateStrategyFromResearch = (factors: string[]) => {
+    const prompt = `Generate a quantitative trading strategy based on the following research factors:\n${factors.map(f => `- ${f}`).join('\n')}\n\nThink about how to combine these factors into alpha signals and risk controls.`;
+    setWorkshopPrompt(prompt);
+    setCurrentPage(Page.WORKSHOP);
+  };
+
+  const handleClearWorkshopPrompt = () => {
+    setWorkshopPrompt(undefined);
+  };
 
   // View Routing Logic
   if (currentView === 'LANDING') {
@@ -63,7 +73,9 @@ const App: React.FC = () => {
       case Page.DASHBOARD:
         return <Dashboard onNavigate={setCurrentPage} />;
       case Page.WORKSHOP:
-        return <AIWorkshop />;
+        return <AIWorkshop initialPrompt={workshopPrompt} onClearPrompt={handleClearWorkshopPrompt} />;
+      case Page.RESEARCH:
+        return <ResearchReports onGenerateStrategy={handleGenerateStrategyFromResearch} />;
       case Page.SIGNAL_BRIDGE:
         return <SignalBridge />;
       case Page.MY_STRATEGIES:
@@ -75,7 +87,9 @@ const App: React.FC = () => {
       case Page.PROFILE:
         return <Profile />;
       case Page.LIVE_SETUP:
-        return <Placeholder title="Live Trading Configuration" />;
+        return <LiveTradingSetup />;
+      case Page.ADMIN_DASHBOARD:
+        return <AdminDashboard />;
       default:
         return <Dashboard onNavigate={setCurrentPage} />;
     }
