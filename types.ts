@@ -26,6 +26,37 @@ export interface Strategy {
   code?: string;
   assets?: number;
   maxDD?: number;
+  
+  // Extended metrics for detail view
+  annualizedReturn?: number;
+  sharpe?: number;
+  volatility?: number;
+  winRate?: number;
+  profitFactor?: number;
+  alpha?: number;
+  beta?: number;
+}
+
+export interface Position {
+  symbol: string;
+  name: string;
+  cost: number;
+  price: number;
+  quantity: number;
+  marketValue: number;
+  pnl: number;
+  pnlPercent: number;
+}
+
+export interface Trade {
+  id: string;
+  time: string;
+  symbol: string;
+  name: string;
+  action: 'BUY' | 'SELL';
+  price: number;
+  volume: number;
+  fee: number;
 }
 
 export interface Signal {

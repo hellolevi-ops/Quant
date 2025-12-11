@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Globe, Link as LinkIcon, AlertTriangle, Shield, Check, Activity, Search } from 'lucide-react';
+import { Globe, Link as LinkIcon, AlertTriangle, Shield, Check, Activity, Search, Plus, Trash2, Edit2, Save, ArrowLeft, Play } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import {
   LineChart,
@@ -7,6 +8,20 @@ import {
   ResponsiveContainer,
   Tooltip
 } from 'recharts';
+
+interface FollowTask {
+   id: string;
+   name: string;
+   sourceUrl: string;
+   status: 'ACTIVE' | 'PAUSED' | 'SYNCING';
+   roi: number;
+   multiplier: number;
+}
+
+const mockTasks: FollowTask[] = [
+   { id: '1', name: 'Snowball-BigV-001', sourceUrl: 'https://xueqiu.com/P/ZH123', status: 'ACTIVE', roi: 42.5, multiplier: 1.0 },
+   { id: '2', name: 'JoinQuant-Top10', sourceUrl: 'https://joinquant.com/P/JQ888', status: 'SYNCING', roi: 12.4, multiplier: 0.5 },
+];
 
 const mockSignals = [
   { id: 1, source: 'Snowball @InvestKing', symbol: 'NVIDIA (NVDA)', action: 'BUY', price: 950.02, time: '10:42:05', delay: 150 },
@@ -17,22 +32,148 @@ const mockSignals = [
 const mockCurve = Array.from({ length: 20 }, (_, i) => ({ val: 10 + i + Math.random() * 5 }));
 
 export const SignalBridge: React.FC = () => {
+  const { t } = useLanguage();
+  const [viewMode, setViewMode] = useState<'LIST' | 'CREATE'>('LIST');
+  const [tasks, setTasks] = useState<FollowTask[]>(mockTasks);
+  
+  // Create State
   const [url, setUrl] = useState('');
   const [status, setStatus] = useState<'IDLE' | 'ANALYZING' | 'CONNECTED'>('IDLE');
   const [multiplier, setMultiplier] = useState(1.0);
   const [isReverse, setIsReverse] = useState(false);
-  const { t } = useLanguage();
+  const [taskName, setTaskName] = useState('');
 
   const handleConnect = () => {
     if (!url) return;
     setStatus('ANALYZING');
-    setTimeout(() => setStatus('CONNECTED'), 2000);
+    setTimeout(() => {
+       setStatus('CONNECTED');
+       setTaskName('New Follow Task ' + (tasks.length + 1));
+    }, 2000);
   };
 
+  const handleSaveTask = () => {
+     if (status !== 'CONNECTED' || !taskName) return;
+     const newTask: FollowTask = {
+        id: `ft_${Date.now()}`,
+        name: taskName,
+        sourceUrl: url,
+        status: 'ACTIVE',
+        roi: 0,
+        multiplier
+     };
+     setTasks(prev => [...prev, newTask]);
+     setViewMode('LIST');
+     // Reset form
+     setUrl('');
+     setStatus('IDLE');
+     setMultiplier(1.0);
+  };
+
+  const handleDeleteTask = (id: string, e: React.MouseEvent) => {
+     e.stopPropagation();
+     setTasks(prev => prev.filter(t => t.id !== id));
+  };
+
+  // --- LIST VIEW ---
+  if (viewMode === 'LIST') {
+     return (
+        <div className="max-w-6xl mx-auto space-y-8">
+           <div className="flex justify-between items-center">
+              <div>
+                 <h2 className="text-2xl font-bold text-white mb-2">{t('bridge.title')}</h2>
+                 <p className="text-slate-400">{t('bridge.list_title')}</p>
+              </div>
+              <button 
+                 onClick={() => setViewMode('CREATE')}
+                 className="px-6 py-2.5 bg-neon-blue hover:bg-sky-500 text-white font-bold rounded-xl shadow-lg shadow-neon-blue/20 flex items-center gap-2 transition-all"
+              >
+                 <Plus size={18} /> {t('bridge.btn_add_task')}
+              </button>
+           </div>
+
+           {tasks.length === 0 ? (
+              <div className="glass-panel p-12 rounded-2xl border border-white/10 text-center flex flex-col items-center justify-center">
+                 <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6">
+                    <Globe size={32} className="text-slate-500"/>
+                 </div>
+                 <p className="text-slate-400 mb-8 max-w-md">{t('bridge.empty')}</p>
+                 <button onClick={() => setViewMode('CREATE')} className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-bold transition-colors">
+                    {t('bridge.btn_add_task')}
+                 </button>
+              </div>
+           ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                 {tasks.map(task => (
+                    <div key={task.id} className="glass-panel p-6 rounded-2xl border border-white/10 hover:border-neon-blue/40 transition-all group relative">
+                       <div className="flex justify-between items-start mb-4">
+                          <div className="flex items-center gap-3">
+                             <div className={`w-10 h-10 rounded-lg flex items-center justify-center border border-white/5 bg-purple-500/10 text-purple-400`}>
+                                <Activity size={20} />
+                             </div>
+                             <div>
+                                <h3 className="font-bold text-white">{task.name}</h3>
+                                <div className="text-xs text-slate-400 truncate max-w-[150px]">{task.sourceUrl}</div>
+                             </div>
+                          </div>
+                          <div className={`w-2 h-2 rounded-full ${task.status === 'ACTIVE' ? 'bg-neon-green shadow-[0_0_8px_#10B981]' : 'bg-yellow-500'}`}></div>
+                       </div>
+                       
+                       <div className="grid grid-cols-2 gap-4 mb-6">
+                          <div className="p-3 bg-white/5 rounded-lg text-center">
+                             <div className="text-xs text-slate-500 uppercase">ROI</div>
+                             <div className="text-lg font-mono font-bold text-neon-green">+{task.roi}%</div>
+                          </div>
+                          <div className="p-3 bg-white/5 rounded-lg text-center">
+                             <div className="text-xs text-slate-500 uppercase">Multiplier</div>
+                             <div className="text-lg font-mono font-bold text-white">{task.multiplier}x</div>
+                          </div>
+                       </div>
+
+                       <div className="flex gap-2 mt-auto">
+                          <button 
+                             className="flex-1 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-bold text-white border border-white/10 flex items-center justify-center gap-2 transition-colors"
+                          >
+                             <Activity size={14} /> Monitor
+                          </button>
+                          <button 
+                             onClick={(e) => handleDeleteTask(task.id, e)}
+                             className="px-3 py-2 bg-neon-red/10 hover:bg-neon-red/20 text-neon-red rounded-lg border border-neon-red/20 transition-colors"
+                          >
+                             <Trash2 size={14} />
+                          </button>
+                       </div>
+                    </div>
+                 ))}
+              </div>
+           )}
+        </div>
+     );
+  }
+
+  // --- CREATE VIEW (Original Bridge UI) ---
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       
-      {/* Top: Connection Panel */}
+      {/* Top: Header */}
+      <div className="flex items-center justify-between mb-4">
+         <button onClick={() => setViewMode('LIST')} className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+            <ArrowLeft size={18} /> Back to List
+         </button>
+         <button 
+            onClick={handleSaveTask}
+            disabled={status !== 'CONNECTED' || !taskName}
+            className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold shadow-lg transition-all ${
+               status === 'CONNECTED' && taskName 
+                  ? 'bg-neon-blue hover:bg-sky-500 text-white shadow-neon-blue/20' 
+                  : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+            }`}
+         >
+            <Save size={16} /> {t('bridge.btn_save_task')}
+         </button>
+      </div>
+
+      {/* Connection Panel */}
       <div className="glass-panel p-8 rounded-2xl border border-white/10">
          <div className="flex flex-col md:flex-row gap-8 items-start">
             
@@ -63,15 +204,27 @@ export const SignalBridge: React.FC = () => {
               </div>
 
               {status === 'CONNECTED' && (
-                <div className="p-4 bg-neon-green/5 border border-neon-green/20 rounded-xl flex items-center space-x-4 animate-in fade-in slide-in-from-top-4 duration-500">
-                  <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center border border-white/10">
-                    <span className="font-bold text-xs">ZH123</span>
+                <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
+                  <div className="p-4 bg-neon-green/5 border border-neon-green/20 rounded-xl flex items-center space-x-4">
+                     <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center border border-white/10">
+                        <span className="font-bold text-xs">ZH123</span>
+                     </div>
+                     <div className="flex-1">
+                        <h4 className="text-white font-medium">Growth-Engine V4</h4>
+                        <p className="text-neon-green text-xs">Annualized: +42.5% | MaxDD: -15%</p>
+                     </div>
+                     <Check className="text-neon-green" />
                   </div>
-                  <div className="flex-1">
-                    <h4 className="text-white font-medium">Growth-Engine V4</h4>
-                    <p className="text-neon-green text-xs">Annualized: +42.5% | MaxDD: -15%</p>
+                  
+                  <div>
+                     <label className="text-xs font-bold text-slate-500 uppercase mb-1 block">Task Name</label>
+                     <input 
+                        type="text" 
+                        value={taskName}
+                        onChange={(e) => setTaskName(e.target.value)}
+                        className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-neon-blue/50"
+                     />
                   </div>
-                  <Check className="text-neon-green" />
                 </div>
               )}
             </div>

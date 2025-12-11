@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { DockerConfig } from '../types';
@@ -122,8 +123,8 @@ export const LiveTradingSetup: React.FC = () => {
          <div className="max-w-6xl mx-auto">
             <div className="flex justify-between items-center mb-8">
                <div>
-                  <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">{t('live.title')}</h2>
-                  <p className="text-slate-500 dark:text-slate-400">{t('live.list_title')}</p>
+                  <h2 className="text-2xl font-bold text-white mb-2">{t('live.title')}</h2>
+                  <p className="text-slate-400">{t('live.list_title')}</p>
                </div>
                <button 
                  onClick={handleCreate}
@@ -138,9 +139,9 @@ export const LiveTradingSetup: React.FC = () => {
                   <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6">
                      <Server size={32} className="text-slate-500"/>
                   </div>
-                  <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">No Instances Configured</h3>
-                  <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-md">{t('live.empty')}</p>
-                  <button onClick={handleCreate} className="px-6 py-2 bg-white/10 hover:bg-white/20 text-slate-800 dark:text-white rounded-lg font-bold transition-colors">
+                  <h3 className="text-xl font-bold text-white mb-2">No Instances Configured</h3>
+                  <p className="text-slate-400 mb-8 max-w-md">{t('live.empty')}</p>
+                  <button onClick={handleCreate} className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-bold transition-colors">
                      {t('live.btn_add')}
                   </button>
                </div>
@@ -150,24 +151,24 @@ export const LiveTradingSetup: React.FC = () => {
                      <div key={inst.id} className="glass-panel p-6 rounded-2xl border border-white/10 hover:border-neon-blue/40 transition-all group relative">
                         <div className="flex justify-between items-start mb-4">
                            <div className="flex items-center gap-3">
-                              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${inst.status === 'CONNECTED' ? 'bg-neon-green/10 text-neon-green' : 'bg-slate-200 dark:bg-slate-700 text-slate-400'}`}>
+                              <div className={`w-10 h-10 rounded-lg flex items-center justify-center border border-white/5 ${inst.status === 'CONNECTED' ? 'bg-neon-green/10 text-neon-green' : 'bg-slate-800 text-slate-400'}`}>
                                  <Server size={20} />
                               </div>
                               <div>
-                                 <h3 className="font-bold text-slate-800 dark:text-white">{inst.name}</h3>
-                                 <div className="text-xs text-slate-500">{inst.provider} • {inst.brokerType}</div>
+                                 <h3 className="font-bold text-white">{inst.name}</h3>
+                                 <div className="text-xs text-slate-400">{inst.provider} • {inst.brokerType}</div>
                               </div>
                            </div>
-                           <div className={`w-2 h-2 rounded-full ${inst.status === 'CONNECTED' ? 'bg-neon-green shadow-[0_0_8px_#10B981]' : 'bg-slate-400 dark:bg-slate-600'}`}></div>
+                           <div className={`w-2 h-2 rounded-full ${inst.status === 'CONNECTED' ? 'bg-neon-green shadow-[0_0_8px_#10B981]' : 'bg-slate-600'}`}></div>
                         </div>
                         
                         <div className="space-y-2 mb-6">
                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-500">Host IP</span>
-                              <span className="text-slate-700 dark:text-slate-300 font-mono">{inst.host}</span>
+                              <span className="text-slate-400">Host IP</span>
+                              <span className="text-slate-200 font-mono">{inst.host}</span>
                            </div>
                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-500">Status</span>
+                              <span className="text-slate-400">Status</span>
                               <span className={inst.status === 'CONNECTED' ? 'text-neon-green' : 'text-slate-500'}>{inst.status}</span>
                            </div>
                         </div>
@@ -175,7 +176,7 @@ export const LiveTradingSetup: React.FC = () => {
                         <div className="flex gap-2 mt-auto">
                            <button 
                              onClick={() => handleEdit(inst)}
-                             className="flex-1 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-bold text-slate-700 dark:text-white border border-slate-200 dark:border-white/5 flex items-center justify-center gap-2 transition-colors"
+                             className="flex-1 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-bold text-white border border-white/10 flex items-center justify-center gap-2 transition-colors"
                            >
                               <Edit2 size={14} /> {t('live.btn_edit')}
                            </button>
@@ -198,7 +199,7 @@ export const LiveTradingSetup: React.FC = () => {
   return (
     <div className="h-[calc(100vh-8rem)] flex flex-col gap-6">
       <div className="flex items-center justify-between mb-2">
-         <button onClick={() => setViewMode('LIST')} className="flex items-center gap-2 text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors">
+         <button onClick={() => setViewMode('LIST')} className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
             <ArrowLeft size={18} /> {t('live.btn_cancel')}
          </button>
          <button onClick={handleSave} className="flex items-center gap-2 px-4 py-2 bg-neon-blue hover:bg-sky-500 text-white rounded-lg text-sm font-bold shadow-lg shadow-neon-blue/20">
@@ -210,17 +211,17 @@ export const LiveTradingSetup: React.FC = () => {
          {/* Left: Configuration Panel */}
          <div className="w-full lg:w-1/3 flex flex-col gap-6 overflow-y-auto pr-2">
             <div className="glass-panel p-6 rounded-2xl border border-white/10">
-               <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+               <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
                   <Server className="text-neon-blue" size={20}/> {t('live.config')}
                </h2>
                
                <div className="space-y-4">
                   <div>
-                     <label className="text-xs font-bold text-slate-500 uppercase block mb-1">{t('live.provider')}</label>
+                     <label className="text-xs font-bold text-slate-400 uppercase block mb-1">{t('live.provider')}</label>
                      <select 
                         value={config.provider}
                         onChange={(e) => setConfig({...config, provider: e.target.value as any})}
-                        className="w-full bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-lg py-2.5 px-3 text-slate-800 dark:text-white text-sm focus:outline-none focus:border-neon-blue/50"
+                        className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-3 text-white text-sm focus:outline-none focus:border-neon-blue/50"
                      >
                         <option value="ALIYUN">Aliyun (ECS)</option>
                         <option value="TENCENT">Tencent Cloud</option>
@@ -231,34 +232,34 @@ export const LiveTradingSetup: React.FC = () => {
 
                   <div className="grid grid-cols-3 gap-4">
                      <div className="col-span-2">
-                        <label className="text-xs font-bold text-slate-500 uppercase block mb-1">{t('live.host')}</label>
+                        <label className="text-xs font-bold text-slate-400 uppercase block mb-1">{t('live.host')}</label>
                         <input 
                            type="text" 
                            value={config.host}
                            onChange={(e) => setConfig({...config, host: e.target.value})}
-                           className="w-full bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-lg py-2.5 px-3 text-slate-800 dark:text-white text-sm focus:outline-none focus:border-neon-blue/50"
+                           className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-3 text-white text-sm focus:outline-none focus:border-neon-blue/50"
                         />
                      </div>
                      <div>
-                        <label className="text-xs font-bold text-slate-500 uppercase block mb-1">{t('live.port')}</label>
+                        <label className="text-xs font-bold text-slate-400 uppercase block mb-1">{t('live.port')}</label>
                         <input 
                            type="text" 
                            value={config.port}
                            onChange={(e) => setConfig({...config, port: e.target.value})}
-                           className="w-full bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-lg py-2.5 px-3 text-slate-800 dark:text-white text-sm focus:outline-none focus:border-neon-blue/50"
+                           className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-3 text-white text-sm focus:outline-none focus:border-neon-blue/50"
                         />
                      </div>
                   </div>
 
                   <div>
-                     <label className="text-xs font-bold text-slate-500 uppercase block mb-1">{t('live.token')}</label>
+                     <label className="text-xs font-bold text-slate-400 uppercase block mb-1">{t('live.token')}</label>
                      <div className="relative">
                         <input 
                            type="password" 
                            value={config.authToken}
                            onChange={(e) => setConfig({...config, authToken: e.target.value})}
                            placeholder="••••••••••••"
-                           className="w-full bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-lg py-2.5 pl-3 pr-10 text-slate-800 dark:text-white text-sm focus:outline-none focus:border-neon-blue/50"
+                           className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 pl-3 pr-10 text-white text-sm focus:outline-none focus:border-neon-blue/50"
                         />
                         <Lock className="absolute right-3 top-2.5 text-slate-500" size={16}/>
                      </div>
@@ -267,11 +268,11 @@ export const LiveTradingSetup: React.FC = () => {
                   <div className="pt-4 border-t border-white/10">
                      <div className="grid grid-cols-2 gap-4">
                         <div>
-                           <label className="text-xs font-bold text-slate-500 uppercase block mb-1">{t('live.broker')}</label>
+                           <label className="text-xs font-bold text-slate-400 uppercase block mb-1">{t('live.broker')}</label>
                            <select 
                               value={config.brokerType}
                               onChange={(e) => setConfig({...config, brokerType: e.target.value as any})}
-                              className="w-full bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-lg py-2.5 px-3 text-slate-800 dark:text-white text-sm focus:outline-none focus:border-neon-blue/50"
+                              className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-3 text-white text-sm focus:outline-none focus:border-neon-blue/50"
                            >
                               <option value="QMT">QMT</option>
                               <option value="PTRADE">Ptrade</option>
@@ -279,12 +280,12 @@ export const LiveTradingSetup: React.FC = () => {
                            </select>
                         </div>
                         <div>
-                           <label className="text-xs font-bold text-slate-500 uppercase block mb-1">{t('live.account')}</label>
+                           <label className="text-xs font-bold text-slate-400 uppercase block mb-1">{t('live.account')}</label>
                            <input 
                               type="text" 
                               value={config.accountId}
                               onChange={(e) => setConfig({...config, accountId: e.target.value})}
-                              className="w-full bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-lg py-2.5 px-3 text-slate-800 dark:text-white text-sm focus:outline-none focus:border-neon-blue/50"
+                              className="w-full bg-black/40 border border-white/10 rounded-lg py-2.5 px-3 text-white text-sm focus:outline-none focus:border-neon-blue/50"
                            />
                         </div>
                      </div>
@@ -319,7 +320,7 @@ export const LiveTradingSetup: React.FC = () => {
                   <div className="flex items-center w-full justify-between relative z-10 px-4">
                      {/* Platform Node */}
                      <div className="flex flex-col items-center gap-2">
-                        <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 flex items-center justify-center shadow-lg">
+                        <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-white/10 flex items-center justify-center shadow-lg">
                            <Activity className="text-neon-blue"/>
                         </div>
                         <span className="text-xs text-slate-400 font-bold">Platform</span>
@@ -328,7 +329,7 @@ export const LiveTradingSetup: React.FC = () => {
                      {/* Cloud Node */}
                      <div className="flex flex-col items-center gap-2">
                         <div className={`w-16 h-16 rounded-2xl border flex items-center justify-center shadow-lg transition-colors duration-500 ${
-                           config.status === 'CONNECTED' ? 'bg-white dark:bg-slate-800 border-neon-green/50' : 'bg-slate-100 dark:bg-slate-900 border-slate-300 dark:border-white/5'
+                           config.status === 'CONNECTED' ? 'bg-slate-800 border-neon-green/50' : 'bg-slate-900 border-white/5'
                         }`}>
                            <Box className={config.status === 'CONNECTED' ? 'text-neon-green' : 'text-slate-600'}/>
                         </div>
@@ -338,7 +339,7 @@ export const LiveTradingSetup: React.FC = () => {
                      {/* Broker Node */}
                      <div className="flex flex-col items-center gap-2">
                         <div className={`w-16 h-16 rounded-2xl border flex items-center justify-center shadow-lg transition-colors duration-500 ${
-                           config.status === 'CONNECTED' ? 'bg-white dark:bg-slate-800 border-neon-green/50' : 'bg-slate-100 dark:bg-slate-900 border-slate-300 dark:border-white/5'
+                           config.status === 'CONNECTED' ? 'bg-slate-800 border-neon-green/50' : 'bg-slate-900 border-white/5'
                         }`}>
                            <ShieldCheck className={config.status === 'CONNECTED' ? 'text-neon-green' : 'text-slate-600'}/>
                         </div>
@@ -347,7 +348,7 @@ export const LiveTradingSetup: React.FC = () => {
                   </div>
 
                   {/* Connecting Lines */}
-                  <div className="absolute top-[32px] left-[15%] right-[15%] h-0.5 bg-slate-300 dark:bg-slate-800 -z-0">
+                  <div className="absolute top-[32px] left-[15%] right-[15%] h-0.5 bg-slate-800 -z-0">
                      <div className={`h-full bg-neon-green transition-all duration-1000 ease-out ${config.status === 'CONNECTED' ? 'w-full' : config.status === 'CONNECTING' ? 'w-1/2' : 'w-0'}`}></div>
                   </div>
                </div>
@@ -388,3 +389,4 @@ export const LiveTradingSetup: React.FC = () => {
     </div>
   );
 };
+    

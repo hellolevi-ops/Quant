@@ -1,4 +1,5 @@
 
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Language = 'en' | 'zh';
@@ -142,6 +143,9 @@ const translations = {
 
     // Signal Bridge
     'bridge.title': 'Universal Signal Bridge',
+    'bridge.list_title': 'Active Follow Tasks',
+    'bridge.btn_add_task': 'Add Follow Task',
+    'bridge.btn_save_task': 'Save Task',
     'bridge.desc': 'Connect external portfolio URLs to automate signal copying.',
     'bridge.input_placeholder': 'Paste URL (e.g., https://xueqiu.com/P/ZH123456)',
     'bridge.btn_connect': 'Connect',
@@ -154,6 +158,7 @@ const translations = {
     'bridge.risk_reverse': 'Reverse Copy (Short)',
     'bridge.risk_slippage': 'Slippage protection enabled. Orders > 2% deviation will be rejected.',
     'bridge.stream_title': 'Live Signal Stream',
+    'bridge.empty': 'No active follow tasks. Add a new task to start copying.',
 
     // My Strategies
     'mystrat.title': 'My Strategies',
@@ -174,6 +179,32 @@ const translations = {
     'mystrat.strat_desc': 'Description',
     'mystrat.empty_live': 'No strategies are currently running live.',
     'mystrat.empty_lib': 'Your library is empty. Create one in AI Workshop or clone from Community.',
+    
+    // Strategy Detail View
+    'strat.tab_summary': 'Summary',
+    'strat.tab_code': 'Source Code',
+    'strat.tab_perf': 'Performance',
+    'strat.tab_analysis': 'Depth Analysis',
+    'strat.annualized': 'Annualized Return',
+    'strat.sharpe': 'Sharpe Ratio',
+    'strat.volatility': 'Volatility',
+    'strat.profit_factor': 'Profit Factor',
+    'strat.alpha': 'Alpha',
+    'strat.beta': 'Beta',
+    'strat.holdings': 'Current Holdings',
+    'strat.transactions': 'Trade History',
+    'strat.monthly_return': 'Monthly Returns',
+    'strat.col_symbol': 'Symbol',
+    'strat.col_cost': 'Cost Price',
+    'strat.col_price': 'Current Price',
+    'strat.col_qty': 'Quantity',
+    'strat.col_mkt_val': 'Market Value',
+    'strat.col_pnl': 'P&L',
+    'strat.col_time': 'Time',
+    'strat.col_action': 'Action',
+    'strat.col_volume': 'Volume',
+    'strat.col_fee': 'Fee',
+    'strat.analysis_title': 'AI Strategy Interpretation',
 
     // Data Center
     'data.title': 'Data Center',
@@ -241,6 +272,14 @@ const translations = {
     'profile.pwd_current': 'Current Password',
     'profile.pwd_new': 'New Password',
     'profile.pwd_confirm': 'Confirm Password',
+    'profile.check_in': 'Daily Check-in',
+    'profile.checked_in': 'Checked In',
+    'profile.earn_title': 'Earn Points',
+    'profile.task_post': 'Publish Strategy',
+    'profile.task_like': 'Like 10 Posts',
+    'profile.task_clone': 'Strategy Cloned',
+    'profile.task_bind': 'Bind WeChat',
+    'profile.btn_go': 'Go',
     
     // Membership & Points
     'mem.tier_free': 'Free Member',
@@ -487,6 +526,9 @@ const translations = {
 
     // Signal Bridge
     'bridge.title': '全网跟单引擎',
+    'bridge.list_title': '活跃跟单任务',
+    'bridge.btn_add_task': '新增跟单任务',
+    'bridge.btn_save_task': '保存任务',
     'bridge.desc': '连接外部投资组合 URL，自动同步交易信号。',
     'bridge.input_placeholder': '粘贴组合链接 (如: https://xueqiu.com/P/ZH123456)',
     'bridge.btn_connect': '开始连接',
@@ -499,6 +541,7 @@ const translations = {
     'bridge.risk_reverse': '反向跟单 (做空)',
     'bridge.risk_slippage': '滑点保护已开启。偏离度 > 2% 的信号将被拒绝。',
     'bridge.stream_title': '实时信号流',
+    'bridge.empty': '暂无活跃跟单任务。点击上方按钮开始跟单。',
 
     // My Strategies
     'mystrat.title': '我的策略',
@@ -519,6 +562,32 @@ const translations = {
     'mystrat.strat_desc': '策略描述',
     'mystrat.empty_live': '当前没有正在实盘运行的策略。',
     'mystrat.empty_lib': '策略库为空。请在 AI 工坊创建或从社区克隆。',
+    
+    // Strategy Detail View
+    'strat.tab_summary': '概要',
+    'strat.tab_code': '源码',
+    'strat.tab_perf': '绩效',
+    'strat.tab_analysis': 'AI 深度解读',
+    'strat.annualized': '年化收益率',
+    'strat.sharpe': '夏普比率',
+    'strat.volatility': '波动率',
+    'strat.profit_factor': '盈亏比',
+    'strat.alpha': 'Alpha',
+    'strat.beta': 'Beta',
+    'strat.holdings': '当前持仓',
+    'strat.transactions': '历史交易',
+    'strat.monthly_return': '月度收益',
+    'strat.col_symbol': '标的代码',
+    'strat.col_cost': '成本价',
+    'strat.col_price': '现价',
+    'strat.col_qty': '持仓量',
+    'strat.col_mkt_val': '市值',
+    'strat.col_pnl': '盈亏',
+    'strat.col_time': '时间',
+    'strat.col_action': '方向',
+    'strat.col_volume': '成交量',
+    'strat.col_fee': '手续费',
+    'strat.analysis_title': 'AI 策略诊断报告',
 
     // Data Center
     'data.title': '全栈数据中心',
@@ -586,6 +655,14 @@ const translations = {
     'profile.pwd_current': '当前密码',
     'profile.pwd_new': '新密码',
     'profile.pwd_confirm': '确认新密码',
+    'profile.check_in': '每日签到',
+    'profile.checked_in': '已签到',
+    'profile.earn_title': '赚取积分',
+    'profile.task_post': '发布策略帖',
+    'profile.task_like': '点赞 10 个帖子',
+    'profile.task_clone': '策略被克隆',
+    'profile.task_bind': '绑定微信账号',
+    'profile.btn_go': '去完成',
     
     // Membership & Points
     'mem.tier_free': '普通用户',

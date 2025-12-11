@@ -1,8 +1,9 @@
 
+
 import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useUser } from '../contexts/UserContext';
-import { User, Shield, Key, Bell, CreditCard, CheckCircle, RefreshCcw, Copy, MessageSquare, Mail, Settings, ChevronRight, Edit3, X, Save, Lock, Zap, Award, Coins, QrCode } from 'lucide-react';
+import { User, Shield, Key, Bell, CreditCard, CheckCircle, RefreshCcw, Copy, MessageSquare, Mail, Settings, ChevronRight, Edit3, X, Save, Lock, Zap, Award, Coins, QrCode, Calendar, ThumbsUp, GitBranch } from 'lucide-react';
 import { ModelProvider, UserTier, PointPackage, PaymentMethod } from '../types';
 
 const POINT_PACKAGES: PointPackage[] = [
@@ -29,6 +30,9 @@ export const Profile: React.FC = () => {
   const [payItem, setPayItem] = useState<{name: string, price: number} | null>(null);
   const [payMethod, setPayMethod] = useState<PaymentMethod>('WECHAT');
   const [isProcessingPay, setIsProcessingPay] = useState(false);
+
+  // Check-in State
+  const [isCheckedIn, setIsCheckedIn] = useState(false);
 
   // Profile Editing State
   const [isEditing, setIsEditing] = useState(false);
@@ -57,6 +61,13 @@ export const Profile: React.FC = () => {
   const handleProfileSave = () => {
     setIsEditing(false);
     // Mock save
+  };
+
+  const handleCheckIn = () => {
+     if (isCheckedIn) return;
+     setIsCheckedIn(true);
+     setPointsBalance(prev => prev + 10);
+     alert("Checked in! +10 Points");
   };
 
   const openPayment = (item: {name: string, price: number}) => {
@@ -156,6 +167,19 @@ export const Profile: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-2 min-w-[140px] z-10">
+             {/* CHECK IN BUTTON */}
+             <button 
+               onClick={handleCheckIn}
+               disabled={isCheckedIn}
+               className={`w-full py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2 transition-all ${
+                  isCheckedIn 
+                     ? 'bg-green-500/20 text-green-500 cursor-default' 
+                     : 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/20 hover:scale-105'
+               }`}
+             >
+                <Calendar size={14} /> {isCheckedIn ? t('profile.checked_in') : t('profile.check_in')}
+             </button>
+
              {isEditing ? (
                <div className="flex gap-2">
                   <button onClick={() => setIsEditing(false)} className="flex-1 px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs text-white transition-colors">
@@ -170,15 +194,41 @@ export const Profile: React.FC = () => {
                   <Edit3 size={14}/> {t('profile.edit_btn')}
                </button>
              )}
-             
-             <button onClick={() => setShowPwdModal(true)} className="px-6 py-2 bg-white/5 border border-white/10 hover:bg-white/10 rounded-lg text-sm text-slate-300 transition-colors flex items-center justify-center gap-2">
-                <Lock size={14}/> {t('profile.change_pwd')}
-             </button>
           </div>
           
           {/* Background Decor */}
           <div className="absolute top-0 right-0 p-8 opacity-5">
              <Award size={120} />
+          </div>
+       </div>
+
+       {/* Earn Points Tasks Section */}
+       <div className="glass-panel p-6 rounded-2xl border border-white/10">
+          <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+             <Zap size={18} className="text-yellow-400"/> {t('profile.earn_title')}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+             {[
+                { title: t('profile.task_post'), pts: 50, icon: Edit3 },
+                { title: t('profile.task_like'), pts: 20, icon: ThumbsUp },
+                { title: t('profile.task_clone'), pts: 100, icon: GitBranch },
+                { title: t('profile.task_bind'), pts: 200, icon: MessageSquare },
+             ].map((task, i) => (
+                <div key={i} className="bg-white/5 border border-white/5 rounded-xl p-4 flex items-center justify-between">
+                   <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-yellow-500/10 flex items-center justify-center text-yellow-500">
+                         <task.icon size={16} />
+                      </div>
+                      <div>
+                         <div className="text-sm font-bold text-white">{task.title}</div>
+                         <div className="text-xs text-yellow-500 font-bold">+{task.pts} pts</div>
+                      </div>
+                   </div>
+                   <button className="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs text-white font-bold transition-colors">
+                      {t('profile.btn_go')}
+                   </button>
+                </div>
+             ))}
           </div>
        </div>
 
